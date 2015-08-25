@@ -1,0 +1,33 @@
+*** Settings ***
+Library  Selenium2Library
+Suite Setup  Open Browser  ${HOMEPAGE}   ${BROWSER}
+Test Setup  Go To  ${HOMEPAGE}
+Suite Teardown  Close all Browsers
+
+*** Variables ***
+${HOMEPAGE}  http://www.google.de
+${BROWSER}  firefox
+
+*** Test Cases ***
+Google searches and verifying results
+    [Tags]  template-tests
+    [Template]  Google and check results
+    banane  wikipedia
+    erbse   suppe
+    robin schmidtke     flickr
+
+Google and search Peter and look for Lustig
+    [Tags]  lustig
+    Google and check results    peter   lustig
+    
+
+
+*** Keywords ***
+Google and check results
+    [Arguments]     ${searchkey}    ${result}
+    Input Text  id=lst-ib   ${searchkey}
+    Press Key  id=lst-ib    ENTER
+    Wait Until Page Contains    ${result}
+
+Go to homepage
+    Open Browser    ${HOMEPAGE}  ${BROWSER}
